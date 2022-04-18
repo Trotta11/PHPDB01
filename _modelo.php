@@ -4,7 +4,6 @@
  * Arquivo que faz a configuração incial da página.
  * Por exemplo, conecta-se ao banco de dados.
  */
-require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 /**
  * Variável que define o título desta página
