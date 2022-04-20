@@ -73,12 +73,54 @@ SQL;
         // Escreve no banco de dados
         $conn->query($sql);
 
+            // Obtem o primeiro nome do remetente
+
+
+
+            // Gera um array com as partes do nome
+            // $parts[0] contem o primeiro nome
+            $parts = explode('', $nome);
+
+
 
 
         // Agradecer ao usuário
         $feedback = <<<HTML
+        <h3>Olá {$parts[0]}!</h3>
+        <p>Seu contato foi enviado com sucesso.</p>
+        <p><em>Obrigado...</em></p>
+        <p><button onclick="location.href = '/'"><i class="fa-solid fa-house-chimney"></i> Página inicial </button></p>
 
 HTML;
+
+// Envia e-mail para o administrador do site
+// ATENÇÃO! Só funciona em provedor pago. não funciona em redes locais.
+
+ // Mensagem do e-mail
+ $mail_message = <<<TXT
+
+ Novo contato enviado para Vitugo:
+ 
+  - Remetente: {$nome}
+  - E-mail: {$email}
+  - Assunto: {$assunto}
+  - Mensagem:
+  {$mensagem}
+ 
+ Obrigado...
+ 
+ TXT;
+ 
+         // Enviando e-mail para 'admin@vitugo.com'.
+         mail('admin@vitugo.com', 'Um contato foi enviado.', $mail_message);
+     
+
+
+
+
+
+
+
 }
     
 
