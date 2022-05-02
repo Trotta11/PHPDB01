@@ -1,1 +1,6 @@
 @import url('/style.css');
+@import url('/contatos/style.css');
+
+.btn-center {
+    text-align: center;
+}

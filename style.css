@@ -149,6 +149,13 @@ body {
     font-size: 2rem;
 }
 
+.wrap>nav img {
+    width: 2rem;
+    height: 2rem;
+    display: block;
+    border-radius: 50%;
+}
+
 /**
  * Estilos do rodapé.
  */
@@ -333,6 +340,11 @@ hr.divider {
         display: inline-block;
         margin-top: 0;
         margin-left: .25rem;
+    }
+
+    .wrap>nav img {
+        width: 1.3rem;
+        height: 1.3rem;
     }
 
     .wrap>main {

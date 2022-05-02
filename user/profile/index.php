@@ -17,6 +17,32 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
+// Se usuário não está logado, redireciona para a página inicial.
+if (!isset($_COOKIE['user'])) header('Location: /');
+
+// Primeiro nome do usuário
+$nome = explode(' ', $user['user_name'])[0];
+
+// Obtém a idade do usuário
+$idade = get_years_old($user['user_birth']);
+
+// Formata perfil para exibição
+$html = <<<HTML
+
+<div class="author-meta">
+
+    <img src="{$user['user_photo']}" alt="{$user['user_name']}">
+    <h2>{$nome}</h2>
+    <ul>
+        <li><strong>{$user['user_name']}</strong></li>
+        <li>E-mail: <a href="mailto:{$user['user_email']}" target="_blank">{$user['user_email']}</a></li>
+        <li>Nasceu em {$user['birth_br']} ({$idade} anos)</li>
+        <li>{$user['user_profile']}</li>
+    </ul>
+
+</div>
+
+HTML;
 
 /************************************************
  * Seus códigos PHP desta página terminam aqui! *
@@ -41,9 +67,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
 <section>
 
-    <h2>Título da página</h2>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, iste aliquam aperiam voluptatem molestias nemo odit unde modi cupiditate exercitationem doloremque quaerat soluta rerum quidem dignissimos officiis sapiente, aut alias!</p>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio soluta voluptatum consequatur voluptatibus cupiditate temporibus qui, nostrum deserunt minus laudantium in officia rem dignissimos facilis modi culpa error aliquam? Quam?</p>
+    <?php echo $html ?>
 
 </section>
 

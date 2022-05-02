@@ -52,7 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
         // SQL para verificar no banco de dados
         $sql = <<<SQL
-SELECT * FROM `users`
+SELECT *,
+ 
+FROM `users`
 WHERE user_email = '{$email}'
 	AND user_password = SHA1('{$password}')
     AND user_status = 'on';
@@ -71,16 +73,16 @@ SQL;
         else :
 
             // Obtém dados do usuário
-            $user = $res->fetch_assoc();
+            $user_data = $res->fetch_assoc();
 
             // Apaga a senha
-            unset($user['user_password']);
+            unset($user_data['user_password']);
 
             // Grava o cookie no navegador
             // OBS:  cookies devem ser criados antes de enviar qualquer coisa para o navegador.
             setcookie(
                 'user',                 // nome do cookie criado
-                serialize($user),       // valor do cookie
+                serialize($user_data),       // valor do cookie
                 $logged,                // tempo de vida do cookie em segundos
                 '/'                     // Domínio do cookie "/" de localhost
             );

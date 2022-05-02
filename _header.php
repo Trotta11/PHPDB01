@@ -7,7 +7,7 @@
     <meta name="author" content="André Luferat - https://github.com/Luferat">
     <meta name="description" content="Aplicativo modelo full-stack usando HTML, CSS, PHP e MySQL.">
     <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <title>Vitugo - <?php echo $title ?></title>
 </head>
 
@@ -29,11 +29,35 @@
 
             <a href="/" title="Página inicial"><i class="fa-solid fa-house-chimney fa-fw"></i><span>Início</span></a>
 
-            <a href="/contatos" title="Faça contato"><i class="fa-solid fa-comment-dots fa-fw"></i><span>Contatos</span></a>
+            <a href="/contatos/" title="Faça contato"><i class="fa-solid fa-comment-dots fa-fw"></i><span>Contatos</span></a>
 
-            <a href="/sobre" title="Sobre..."><i class="fa-solid fa-circle-info fa-fw"></i><span>Sobre</span></a>
+            <a href="/sobre/" title="Sobre..."><i class="fa-solid fa-circle-info fa-fw"></i><span>Sobre</span></a>
 
-            <a href="/usuario" title="Usuário"><i class="fa-solid fa-user fa-fw"></i><span>Usuário</span></a>
+            <?php
+
+            // Se usuário está logado...
+            if ($user) :
+            ?>
+
+                <a href="/user/profile/" title="Perfil de <?php echo $user['user_name'] ?>">
+                    <img src="<?php echo $user['user_photo'] ?>" alt="<?php echo $user['user_name'] ?>">
+                    <span>Perfil</span>
+                </a>
+
+            <?php
+
+            // Se usuário NÃO está logado
+            else :
+            ?>
+
+                <a href="/user/login/" title="Usuário">
+                    <i class="fa-solid fa-right-to-bracket fa-fw"></i>
+                    <span>Login</span>
+                </a>
+
+            <?php
+            endif;
+            ?>
 
         </nav>
 

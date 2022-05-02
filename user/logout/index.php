@@ -17,6 +17,22 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
+// Se usuário não está logado, redireciona para a página de perfil dele.
+    if(isset($_COOKIE['user'])) header('Location: /');
+
+// Se existe a variável "logout" no URL da página.
+
+    if($_SERVER['QUERT_STRING'] === 'logout') {
+
+        // Apaga o cookie, colocando o tempo de vida negativo (-1)
+
+            setcookie('user', '',-1,'/');
+
+        // Redirecionar para 'home' 
+        
+        header('Location: /');
+    }
+
 
 /************************************************
  * Seus códigos PHP desta página terminam aqui! *
@@ -41,9 +57,12 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
 <section>
 
-    <h2>Título da página</h2>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, iste aliquam aperiam voluptatem molestias nemo odit unde modi cupiditate exercitationem doloremque quaerat soluta rerum quidem dignissimos officiis sapiente, aut alias!</p>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio soluta voluptatum consequatur voluptatibus cupiditate temporibus qui, nostrum deserunt minus laudantium in officia rem dignissimos facilis modi culpa error aliquam? Quam?</p>
+        <h2>Logout / Sair</h2>
+        <p>Se você sair do aplicativo agora, terá que entrar novamente para ter acesso ao conteúdo exclusivo.</p>
+        <p>Clique no botão abaixo para sair.</p>
+        <p class="btn-center">
+            <button type="button" onclick="location.href = '?logout'">Sair</button>
+        </p>
 
 </section>
 

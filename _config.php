@@ -40,6 +40,22 @@ $conn->query('SET lc_time_names = pt_BR');
  */
 date_default_timezone_set('America/Sao_Paulo');
 
+
+/**
+ * Define o fuso horário (opcional + recomendado).
+ */
+    date_default_timezone_set('America/Sao_Paulo');
+
+/**
+ * Se usuário está logado, cria variável (array) '$user'
+ */
+    if (isset($_COOKIE['user']))
+    $user = unserialize($_COOKIE['user']);
+    else
+    $user = false;
+
+    dump($user);
+
 /*************************
  * Funções de uso geral. *
  *************************/
