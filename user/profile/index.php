@@ -31,14 +31,29 @@ $html = <<<HTML
 
 <div class="author-meta">
 
-    <img src="{$user['user_photo']}" alt="{$user['user_name']}">
     <h2>{$nome}</h2>
+    <img src="{$user['user_photo']}" alt="{$user['user_name']}">
+    &nbsp;
     <ul>
         <li><strong>{$user['user_name']}</strong></li>
         <li>E-mail: <a href="mailto:{$user['user_email']}" target="_blank">{$user['user_email']}</a></li>
         <li>Nasceu em {$user['birth_br']} ({$idade} anos)</li>
         <li>{$user['user_profile']}</li>
     </ul>
+
+    <div class="btn-user">
+
+        <button type="button" onclick="location.href='/user/edit/'">
+            <i class="fa-solid fa-address-card fa-fw"></i>
+            Editar Perfil
+        </button>
+
+        <button type="button" onclick="location.href='/user/logout/'">
+            <i class="fa-solid fa-right-from-bracket fa-fw"></i>
+            Logout / Sair
+        </button>
+
+    </div>
 
 </div>
 

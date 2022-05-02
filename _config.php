@@ -54,7 +54,7 @@ date_default_timezone_set('America/Sao_Paulo');
     else
     $user = false;
 
-    dump($user);
+    //dump($user);
 
 /*************************
  * Funções de uso geral. *

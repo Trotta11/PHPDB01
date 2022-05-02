@@ -52,12 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
         // SQL para verificar no banco de dados
         $sql = <<<SQL
+
 SELECT *,
- 
+    DATE_FORMAT(user_birth, '%d/%m/%Y') AS birth_br
 FROM `users`
 WHERE user_email = '{$email}'
 	AND user_password = SHA1('{$password}')
     AND user_status = 'on';
+
 SQL;
 
         // Executa a query
@@ -147,7 +149,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             <input type="password" name="password" id="password" autocomplete="off" required class="valid" value="Qw3rtyui0P" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,}$">
         </p>
 
-        <!-- pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,}$" -->
+        <!--  -->
 
         <p>
             <label>

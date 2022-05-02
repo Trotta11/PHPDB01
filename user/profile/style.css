@@ -1,5 +1,8 @@
 @import url('/style.css');
+
 @import url('/ler/style.css');
+
+@import url('/contatos/style.css');
 
 .author-meta {
     width: 100%;
@@ -15,4 +18,10 @@
 
 .author-meta h2 {
     text-align: center;
+}
+
+.btn-user {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
 }
