@@ -142,7 +142,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
         <p>
             <label for="password">Senha:</label>
-            <input type="password" name="password" id="password" autocomplete="off" required class="valid" value="123">
+            <input type="password" name="password" id="password" autocomplete="off" required class="valid" value="Qw3rtyui0P" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,}$">
         </p>
 
         <!-- pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,}$" -->
