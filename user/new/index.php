@@ -9,12 +9,58 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
+// Cria e inicializa as variáveis usadas no script
+$name = $email = $birth = $profile = $password = $error = '';
+
 // Se formulário foi enviado...
 if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
-    dump($_POST, false);                              // Dados do formulário
-    dump($_FILES, false);                             // Dados do arquivo enviado
-    dump(getimagesize($_FILES['photo']['tmp_name'])); // Dados da imagem
+    // Recebe o campo 'nome' do formulário e sanitiza
+    $name = trim(htmlspecialchars($_POST['name']));
+
+    // Recebe o campo 'email' dor formulário e sanitiza
+    $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
+
+    // Recebe a data de nascimento e sanitiza
+    $birth = trim(htmlspecialchars($_POST['birth']));
+
+    // Recebe o perfil e sanitiza
+    $profile = trim(htmlspecialchars($_POST['profile']));
+
+    // Recebe a senha e sanitiza
+    $password = trim(htmlspecialchars($_POST['password']));
+
+    // Verifica se tem algum campo vazio
+    if (
+        $name === '' or
+        $email === '' or
+        $birth === '' or
+        $profile === '' or
+        $password === ''
+    ) :
+
+        // Exibe mensagem de erro para o usuário e não faz mais nada
+        $error = <<<HTML
+
+            <h3>Oooops!</h3>
+            <p>Não foi possível enviar o cadastro.</p>
+            <p>Você precisa preencher todos os campos do formulário.</p>
+            
+HTML;
+
+    elseif (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $password)) :
+
+        $error = <<<HTML
+
+            <h3>Oooops!</h3>
+            <p>A senha esta fora do padrão.</p>
+            <p>Por favor, altere a senha e tente novamente.</p>
+
+HTML;
+
+    endif;
+
+    dump($error);
 
 endif;
 
@@ -93,7 +139,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
         <p>
             <label for="password">Senha:</label>
-            <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="Qwertyui0p">
+            <input type="password" name="password" id="password" required  pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="Qwertyui0p">
             <button type="button" id="passToggle"><i class="fa-solid fa-eye fa-fw"></i></button>
         <div class="form-help">
             <ul>
