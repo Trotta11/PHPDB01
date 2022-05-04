@@ -23,6 +23,7 @@ if ($id === 0) header('Location: /index.php');
 
 // Monta a query que obtém o artigo
 $sql = <<<SQL
+
 SELECT *,
 	    -- DATE_FORMAT(art_date, '%d/%m/%Y às %H:%i') AS date_br,
         DATE_FORMAT(art_date, '%d/%m/%Y') AS date_br,
@@ -32,6 +33,7 @@ INNER JOIN `users` ON art_author = user_id
 WHERE art_id = '{$id}'
     AND art_status = 'on'
     AND art_date <= NOW();
+
 SQL;
 
 // Executa a query
@@ -47,11 +49,15 @@ $artigo = $res->fetch_assoc();
 
 // Formata HTML para o navegador
 $html_article = <<<HTML
+
 <h2>{$artigo['art_title']}</h2>
+
 <div class="author-date">
     Por {$artigo['user_name']} em {$artigo['date_br']}.
 </div>
+
 <div>{$artigo['art_content']}</div>
+
 HTML;
 
 // Primeiro nome do autor
@@ -62,7 +68,9 @@ $idade = get_years_old($artigo['user_birth']);
 
 // Formata HTML para o autor
 $html_author = <<<HTML
+
 <div class="author-meta">
+
     <img src="{$artigo['user_photo']}" alt="{$artigo['user_name']}">
     <h3>{$nome}</h3>
     <ul>
@@ -71,11 +79,14 @@ $html_author = <<<HTML
         <li>Nasceu em {$artigo['birth_br']} ({$idade} anos)</li>
         <li>{$artigo['user_profile']}</li>
     </ul>
+
 </div>
+
 HTML;
 
 // Verifica se autor tem mais artigos
 $sql = <<<SQL
+
 SELECT art_id, art_title, art_intro 
 FROM `articles`
 WHERE art_author = '{$artigo['user_id']}'
@@ -84,6 +95,7 @@ WHERE art_author = '{$artigo['user_id']}'
     AND art_date <= NOW()
 ORDER BY RAND()
 LIMIT 4;
+
 SQL;
 
 // Executa a query
@@ -94,8 +106,11 @@ if ($res->num_rows > 0) :
 
 
     $html_author .= <<<HTML
+
 <div class="author-articles">
+
     <h3>+ Artigos de {$nome}</h3>
+
 HTML;
 
     // Loop para pegar todos os artigos recebidos
@@ -103,10 +118,12 @@ HTML;
 
         // Monta lista de artigos
         $html_author .= <<<HTML
+
     <div class="author-article" onclick="location.href='/ler/?id={$mais_artigos['art_id']}'">
         <h4>{$mais_artigos['art_title']}</h4>
         <small>{$mais_artigos['art_intro']}</small>
     </div>
+
 HTML;
 
     endwhile;
