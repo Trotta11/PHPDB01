@@ -32,7 +32,10 @@ $html = <<<HTML
 <div class="author-meta">
 
     <h2>{$nome}</h2>
-    <img src="{$user['user_photo']}" alt="{$user['user_name']}">
+    <div class="user-photo">
+        <img src="{$user['user_photo']}" alt="{$user['user_name']}">
+        <a href="/user/profile/" title="Alterar foto de perfil."><i class="fa-solid fa-pen-to-square fa-fw"></i></a>
+    </div>
     &nbsp;
     <ul>
         <li><strong>{$user['user_name']}</strong></li>

@@ -41,6 +41,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 <section>
 
     <h2>Logout / Sair</h2>
+    <p class="text-center" style="color: grey"><i class="fa-solid fa-right-from-bracket fa-fw fa-4x"></i></p>
     <p>Se você sair do aplicativo agora, terá que entrar novamente para ter acesso ao conteúdo exclusivo.</p>
     <p>Clique no botão abaixo para sair.</p>
     <p class="text-center">

@@ -19,3 +19,11 @@
 .author-meta h2 {
     text-align: center;
 }
+
+.user-photo a {
+    float: right;
+    margin-top: -2rem;
+    border: 1px solid grey;
+    border-radius: .3rem;
+    padding: .25rem;
+}

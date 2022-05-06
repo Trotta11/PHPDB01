@@ -110,6 +110,8 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
     <h2>Login / Entrar</h2>
 
+    <p class="text-center" style="margin-bottom: 0; color: grey"><i class="fa-solid fa-right-to-bracket fa-fw fa-4x"></i></p>
+
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" class="block-center">
 
         <?php
