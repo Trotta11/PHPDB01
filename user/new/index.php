@@ -118,7 +118,7 @@ SQL;
     else :
 
         // Formada mensagem de erro.
-        $error = '<h3>Oooops!</h3><p>ocorreram erros que impedem seu cadastro:</p><ul>' . $error . '</ul>';
+        $error = '<h3>Oooops!</h3><p>Ocorreram erros que impedem seu cadastro:</p><ul>' . $error . '</ul>';
 
     endif;
 

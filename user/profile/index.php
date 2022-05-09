@@ -61,14 +61,23 @@ $html = <<<HTML
         </a>
 
     </div>
+
     <hr class="divider">
-    <div class="text-center">
+
+    <div class="user-links">
+
+        <a href="/user/password/">
+        <i class="fa-solid fa-key fa-fw"></i>
+            Trocar senha
+        </a>
+
         <a href="/user/delete/">
             <i class="fa-solid fa-user-xmark fa-fw"></i>
-            Cancelar cadastro
+            Cancelar
         </a>
-    </div>
 
+    </div>
+ 
 </div>
 
 HTML;
@@ -100,9 +109,9 @@ if ($_SERVER['QUERY_STRING'] === 'photo') :
                 // Atualiza banco de dados.
                 $sql = <<<SQL
 
-                UPDATE users SET user_photo = '{$photo}'
-                WHERE user_id = '{$user['user_id']}'
-                AND user_status = 'on';
+UPDATE users SET user_photo = '{$photo}'
+WHERE user_id = '{$user['user_id']}'
+    AND user_status = 'on';
 
 SQL;
                 $conn->query($sql);
@@ -110,11 +119,11 @@ SQL;
                 // SQL para obter TODOS os dados do usuário e gerar o cookie novamente.
                 $sql = <<<SQL
 
-                SELECT *,
-                DATE_FORMAT(user_birth, '%d/%m/%Y') AS birth_br
-                FROM `users`
-                WHERE user_email = '{$user['user_email']}'
-                AND user_status = 'on';
+SELECT *,
+    DATE_FORMAT(user_birth, '%d/%m/%Y') AS birth_br
+FROM `users`
+WHERE user_email = '{$user['user_email']}'
+    AND user_status = 'on';
                 
 SQL;
 
@@ -142,20 +151,20 @@ SQL;
                 header('Location: ' . $_SERVER['SCRIPT_NAME']);
             }
 
-            // Se não enviou uma foto...
-                else :
+        // Se não enviou uma foto...
+        else :
 
             // Carrega uma foto padrão.
             $photo = '/user/img/generic_user.png';
-                endif;
-
-            else :
-
-            $modal_photo = true;
-
-            endif;
-
         endif;
+
+    else :
+
+        $modal_photo = true;
+
+    endif;
+
+endif;
 
 /************************************************
  * Seus códigos PHP desta página terminam aqui! *
