@@ -43,7 +43,7 @@ $html = <<<HTML
         <li>Nasceu em {$user['birth_br']} ({$idade} anos)</li>
         <li>{$user['user_profile']}</li>
     </ul>
-<hr class="divider">
+    <hr class="divider">
     <div class="user-links">
 
         <a href="/user/edit/">
@@ -56,6 +56,13 @@ $html = <<<HTML
             Logout / Sair
         </a>
 
+    </div>
+    <hr class="divider">
+    <div class="text-center">
+        <a href="/user/delete/">
+            <i class="fa-solid fa-user-xmark fa-fw"></i>
+            Cancelar cadastro
+        </a>
     </div>
 
 </div>

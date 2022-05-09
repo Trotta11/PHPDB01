@@ -146,7 +146,10 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
     <p class="text-center" style="color:grey"><i class="fa-solid fa-user-plus fa-fw fa-4x"></i></p>
 
-    <?php if ($feedback) : ?>
+    <?php
+    // Se o cadastyro foi finalizado com sucesso...
+    if ($feedback) :
+    ?>
 
         <div class="block-center">
 
@@ -161,6 +164,13 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
         </div>
 
+        <script>
+            // JavaScript que bloqueia reenvio do form caso a página seja recarregada.
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        </script>
+
     <?php else : ?>
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" name="newuser" enctype="multipart/form-data">
@@ -171,21 +181,21 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
             <p>
                 <label for="name">Nome completo:</label>
-                <input type="text" name="name" id="name" required minlength="3" class="valid" autocomplete="off" value="Joca da Silva">
+                <input type="text" name="name" id="name" required minlength="3" class="valid" autocomplete="off" value="<?php echo $name ?>">
             </p>
 
             <p>
                 <label for="email">E-mail:</label>
-                <input type="text" name="email" id="email" required class="valid" autocomplete="off" value="joca@silva.com">
+                <input type="text" name="email" id="email" required class="valid" autocomplete="off" value="<?php echo $email ?>">
             </p>
 
             <p>
                 <label for="birth">Data de nascimento:</label>
-                <input type="date" name="birth" id="birth" required class="valid" autocomplete="off" value="2000-10-11">
+                <input type="date" name="birth" id="birth" required class="valid" autocomplete="off" value="<?php echo $birth ?>">
             </p>
 
             <p>
-                <label for="photo">Imagem de perfil:</label>
+                <label for="photo">Imagem de perfil: <small>(Opcional)</small></label>
                 <input type="file" name="photo" id="photo" class="valid" accept="image/jpeg, image/jpg, image/png">
 
             <div class="form-help">
@@ -198,8 +208,8 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             </p>
 
             <p>
-                <label for="profile">Prefil resumido:</label>
-                <textarea name="profile" id="profile" class="valid" autocomplete="off">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque dolore, ab voluptate, earum deleniti.</textarea>
+                <label for="profile">Prefil resumido: <small>(Opcional)</small></label>
+                <textarea name="profile" id="profile" class="valid" autocomplete="off"><?php echo $profile ?></textarea>
             <div class="form-help">
                 <ul>
                     <li>Escreva sobre você, de forma resumida.</li>
@@ -209,10 +219,11 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
             <p>
                 <label for="password">Senha:</label>
-                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="Qw3rtyui0P">
+                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="">
                 <button type="button" id="passToggle"><i class="fa-solid fa-eye fa-fw"></i></button>
             <div class="form-help">
                 <ul>
+                    <li>Senha de teste (apague isso!) &rarr; Qw3rtyui0P</li>
                     <li>Mínimo de 7 e máximo de 32 caracteres;</li>
                     <li>Pelo menos uma letra maiúscula de A até Z;</li>
                     <li>Pelo menos um número de 0 à 9.</li>
