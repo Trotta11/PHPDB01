@@ -7,7 +7,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 /***********************************************
  * Seus códigos PHP desta página iniciam aqui! *
- ***********************************************/
+ *   **********************************************/
 
 // Se usuário já está logado, redireciona para a página de perfil dele.
 if (isset($_COOKIE['user'])) header('Location: /user/profile/');
@@ -79,7 +79,7 @@ SQL;
             // OBS:  cookies devem ser criados antes de enviar qualquer coisa para o navegador.
             setcookie(
                 'user',                 // nome do cookie criado
-                serialize($user_data),       // valor do cookie
+                serialize($user_data),  // valor do cookie
                 $logged,                // tempo de vida do cookie em segundos
                 '/'                     // Domínio do cookie "/" de localhost
             );
