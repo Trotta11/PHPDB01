@@ -21,11 +21,11 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 if (!isset($_COOKIE['user'])) header('Location: /user/login/');
 
 // Variáveis principais
-$id = $name = $email = $birth = $profile = $error = '';
+$id = $name = $email = $birth = $profile = $password = $error = '';
 $feedback = false;
 
 // Se formulário foi enviado...
-    if ($_SERVER["REQUEST_METHOD"] == "POST") :
+if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
     // Recebe o campo 'nome' do formulário, sanitiza e valida.
     $name = trim(htmlspecialchars($_POST['name']));
@@ -60,32 +60,52 @@ $feedback = false;
     // Recebe o 'perfil' do formulário e sanitiza.
     $profile = trim(htmlspecialchars($_POST['profile']));
 
+    // Recebe a 'senha' do formulário, sanitiza e valida.
+    $password = trim(htmlspecialchars($_POST['password']));
+    if (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $password)) :
+        $error .= '<li>A senha está fora do padrão;</li>';
+    else :
+        // Testa a senha no banco de dados.
+        $sql = <<<SQL
+
+SELECT user_id FROM users 
+WHERE user_id = '{$user['user_id']}' 
+    AND user_password = SHA1('{$password}');
+
+SQL;
+        $res = $conn->query($sql);
+        if ($res->num_rows != 1)
+            $error .= '<li>A senha não confere;</li>';
+
+    endif;
+
     // Se não exitem erros.
     if ($error === '') :
 
         // Query de atualização do cadastro.
         $sql = <<<SQL
 
-    UPDATE `users` SET 
+UPDATE `users` SET 
 	user_name = '{$name}',
 	user_email = '{$email}',
 	user_birth = '{$birth}',
 	user_profile = '{$profile}'
-    WHERE user_id = '{$user['user_id']}'
+WHERE user_id = '{$user['user_id']}'
+    AND user_password = SHA1('{$password}')
     AND user_status = 'on';
 
 SQL;
 
         // Executa a query.
-        $conn->query($sql);
+        $res = $conn->query($sql);
 
         // SQL para obter TODOS os dados do usuário e gerar o cookie novamente.
         $sql = <<<SQL
 
 SELECT *,
     DATE_FORMAT(user_birth, '%d/%m/%Y') AS birth_br
-    FROM `users`
-    WHERE user_email = '{$email}'
+FROM `users`
+WHERE user_email = '{$email}'
     AND user_status = 'on';
                 
 SQL;
@@ -112,6 +132,12 @@ SQL;
 
         // Feedback
         $feedback = true;
+
+    // Se ocorreram erros...
+    else :
+
+        // Formada mensagem de erro.
+        $error = '<h3>Oooops! Ocorreram erros:</h3><ul>' . $error . '</ul>';
 
     endif;
 
@@ -180,8 +206,19 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             <h3>Oba!</h3>
             <p>Seu cadastro foi atualizado com sucesso!</p>
             <hr class="divider">
-            <p class="text-center"><a href="/"><i class="fa-solid fa-house fa-fw"></i> Página inicial</a></p>
+            <div class="user-links">
 
+                <a href="/user/profile/">
+                    <i class="fa-solid fa-address-card fa-fw"></i>
+                    Ver Perfil
+                </a>
+
+                <a href="/">
+                    <i class="fa-solid fa-house-chimney fa-fw"></i>
+                    Página inicial
+                </a>
+
+            </div>
         </div>
 
         <script>
@@ -220,6 +257,19 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             <div class="form-help">
                 <ul>
                     <li>Escreva sobre você, de forma resumida.</li>
+                </ul>
+            </div>
+            </p>
+
+            <hr class="divider">
+
+            <p>
+                <label for="password">Digite a senha atual:</label>
+                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off">
+                <button type="button" id="passToggle" data-field="password"><i class="fa-solid fa-eye fa-fw"></i></button>
+            <div class="form-help">
+                <ul>
+                    <li>A senha é usada para confirmar que a conta é sua.</li>
                 </ul>
             </div>
             </p>

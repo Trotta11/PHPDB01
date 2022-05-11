@@ -368,7 +368,7 @@ form input.password {
 
 /* Botão que mostra/oculta senha. */
 
-form button[id="passToggle"] {
+form button[id="passToggle"], form button[id="newPassToggle"] {
     padding-left: .5rem;
     padding-right: .5rem;
     background: transparent;

@@ -17,12 +17,12 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
+// Se usuário não está logado, redireciona para a página inicial.
+if (!isset($_COOKIE['user'])) header('Location: /');
+
 // Vairáveis do script.
 $modal_photo = false;
 $error = '';
-
-// Se usuário não está logado, redireciona para a página inicial.
-if (!isset($_COOKIE['user'])) header('Location: /');
 
 // Primeiro nome do usuário
 $nome = explode(' ', $user['user_name'])[0];
@@ -55,9 +55,9 @@ $html = <<<HTML
             Editar Perfil
         </a>
 
-        <a href="/user/logout/">
-            <i class="fa-solid fa-right-from-bracket fa-fw"></i>
-            Logout / Sair
+        <a href="/user/password/">
+            <i class="fa-solid fa-key fa-fw"></i>
+            Trocar senha
         </a>
 
     </div>
@@ -66,9 +66,9 @@ $html = <<<HTML
 
     <div class="user-links">
 
-        <a href="/user/password/">
-        <i class="fa-solid fa-key fa-fw"></i>
-            Trocar senha
+        <a href="/user/logout/">
+            <i class="fa-solid fa-right-from-bracket fa-fw"></i>
+            Logout / Sair
         </a>
 
         <a href="/user/delete/">

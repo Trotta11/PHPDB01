@@ -1,21 +1,39 @@
 <?php
 
 /**
+ * Exemplo de upload de arquivo com PHP.
  * Este arquivo é apenas um exemplo que não faz parte da aplicação completa.
  * Pode ser removido depois que o assunto for entendido.
+ * 
+ * Referências: https://www.w3schools.com/php/php_file_upload.asp
  */
 
-// Recebe dados do formulário
-echo '<pre>';
-print_r($_POST);
-print_r($_FILES);
-echo '</pre>';
+// Se formulário foi enviado...
+if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
-// 3) Salva arquivo enviado no servidor
-move_uploaded_file(
-    $_FILES['arquivo']['tmp_name'], // Origem -> pasta 'tmp'
-    'arquivos/teste' // Destino
-);
+    echo '<pre>';
+
+    // $_POST[] recebe dados dos campos normais do formulário.
+    echo "\n" . '$_POST: ';
+    print_r($_POST);
+
+    // $_FILES[] recebe os metadados do arquivo enviado.
+    echo '<hr>$_FILES: ';
+    print_r($_FILES);
+
+    // Se o arquivo for uma imagem, obtemos as dimensões dela com getimagesize()[].
+    echo "<hr>getimagesize(): ";
+    print_r(getimagesize($_FILES['arquivo']['tmp_name']));
+
+    echo '</pre>';
+
+    // 4) Salva arquivo enviado no servidor, na pasta 'arquivos'.
+    move_uploaded_file(
+        $_FILES['arquivo']['tmp_name'], // Origem -> pasta 'tmp'
+        'arquivos/' . $_FILES['arquivo']['name'] // Destino -> pasta 'arquivos/'
+    );
+
+endif;
 
 ?>
 <!DOCTYPE html>
@@ -29,16 +47,17 @@ move_uploaded_file(
 
 <body>
 
-    <!-- 1) enctype="..." obrigatório para upload de arquivos -->
+    <!-- 1) enctype="..." obrigatório para upload de arquivos. -->
     <form action="upload.php" method="post" enctype="multipart/form-data">
 
-        <p> Nome: <input type="text" name="nome" value="joca"> </p>
-        <p> E-mail: <input type="email" name="email" value="teste@teste"> </p>
+        <!-- 2) Campos normais do formulário, se necessários. -->
+        <p>Nome: <input type="text" name="nome" value="joca"></p>
+        <p>E-mail: <input type="email" name="email" value="teste@teste"></p>
 
-        <!-- 2) Campo que pesquisa o arquivo a ser enviado (upload) no computador. -->
-        <p> Arquivo: <input type="file" name="arquivo"> </p>
+        <!-- 3) Campo que pesquisa o arquivo a ser enviado (upload) no computador. -->
+        <p>Arquivo: <input type="file" name="arquivo"></p>
 
-        <p> <button type="submit">Enviar</button> </p>
+        <p><button type="submit">Enviar</button></p>
 
     </form>
 

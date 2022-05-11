@@ -7,7 +7,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 /***********************************************
  * Seus códigos PHP desta página iniciam aqui! *
- *   **********************************************/
+ ***********************************************/
 
 // Se usuário já está logado, redireciona para a página de perfil dele.
 if (isset($_COOKIE['user'])) header('Location: /user/profile/');
@@ -19,7 +19,7 @@ $email = $password = $feedback = '';
 $logged = 0;
 
 // Processa o formulário, somente se ele foi enviado...
-    if ($_SERVER["REQUEST_METHOD"] == "POST") :
+if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
     // Obtém os dados do formulário para as variáveis
     $email = trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
@@ -47,8 +47,8 @@ $logged = 0;
 
 SELECT *,
     DATE_FORMAT(user_birth, '%d/%m/%Y') AS birth_br
-    FROM `users`
-    WHERE user_email = '{$email}'
+FROM `users`
+WHERE user_email = '{$email}'
 	AND user_password = SHA1('{$password}')
     AND user_status = 'on';
 
@@ -130,7 +130,6 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
         ?>
 
         <p>Logue-se para ter acesso ao conteúdo exclusivo. Se ainda não se cadastrou, <a href="/user/new/">cadastre-se aqui</a>.</p>
-        <small>Senha de teste (apague isso!) &rarr; Qw3rtyui0P</small>
 
         <p>
             <label for="email">E-mail:</label>
@@ -139,8 +138,8 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
         <p>
             <label for="password">Senha:</label>
-            <input type="password" name="password" id="password" autocomplete="off" required class="valid password" value="" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$">
-            <button type="button" id="passToggle"><i class="fa-solid fa-eye fa-fw"></i></button>
+            <input type="password" name="password" id="password" autocomplete="off" required class="valid password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$">
+            <button type="button" id="passToggle" data-field="password"><i class="fa-solid fa-eye fa-fw"></i></button>
         </p>
 
         <p>

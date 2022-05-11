@@ -118,7 +118,7 @@ SQL;
     else :
 
         // Formada mensagem de erro.
-        $error = '<h3>Oooops!</h3><p>Ocorreram erros que impedem seu cadastro:</p><ul>' . $error . '</ul>';
+        $error = '<h3>Oooops! Ocorreram erros:</h3><ul>' . $error . '</ul>';
 
     endif;
 
@@ -147,7 +147,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
     <p class="text-center" style="color:grey"><i class="fa-solid fa-user-plus fa-fw fa-4x"></i></p>
 
     <?php
-    // Se o cadastyro foi finalizado com sucesso...
+    // Se o cadastro foi finalizado com sucesso...
     if ($feedback) :
     ?>
 
@@ -219,11 +219,10 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 
             <p>
                 <label for="password">Senha:</label>
-                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="">
-                <button type="button" id="passToggle"><i class="fa-solid fa-eye fa-fw"></i></button>
+                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off">
+                <button type="button" id="passToggle" data-field="password"><i class="fa-solid fa-eye fa-fw"></i></button>
             <div class="form-help">
                 <ul>
-                    <li>Senha de teste (apague isso!) &rarr; Qw3rtyui0P</li>
                     <li>Mínimo de 7 e máximo de 32 caracteres;</li>
                     <li>Pelo menos uma letra maiúscula de A até Z;</li>
                     <li>Pelo menos um número de 0 à 9.</li>

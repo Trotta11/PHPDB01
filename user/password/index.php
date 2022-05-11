@@ -17,6 +17,9 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
+// Se usuário NÃO está logado, envia para 'login'.
+if (!isset($_COOKIE['user'])) header('Location: /user/login/');
+
 // Variáveis principais.
 $error = '';
 $feedback = false;
@@ -25,9 +28,28 @@ $feedback = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") :
 
     // Recebe a 'senha' do formulário, sanitiza e valida usando REGEX.
+    $newpassword = trim(htmlspecialchars($_POST['newpassword']));
+    if (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $newpassword))
+        $error .= '<li>A nova senha está fora do padrão;</li>';
+
+    // Recebe a 'senha' do formulário, sanitiza e valida.
     $password = trim(htmlspecialchars($_POST['password']));
-    if (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $password))
-        $error .= '<li>A senha está fora do padrão;</li>';
+    if (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $password)) :
+        $error .= '<li>A senha atual está fora do padrão;</li>';
+    else :
+        // Testa a senha no banco de dados.
+        $sql = <<<SQL
+
+SELECT user_id FROM users 
+WHERE user_id = '{$user['user_id']}' 
+    AND user_password = SHA1('{$password}');
+
+SQL;
+        $res = $conn->query($sql);
+        if ($res->num_rows != 1)
+            $error .= '<li>A senha atual não confere;</li>';
+
+    endif;
 
     // Se não ocorreram erros.
     if ($error === '') :
@@ -51,7 +73,7 @@ SQL;
     else :
 
         // Formada mensagem de erro.
-        $error = '<h3>Oooops!</h3><p>Ocorreram erros que impedem seu cadastro:</p><ul>' . $error . '</ul>';
+        $error = '<h3>Oooops!</h3><p>Ocorreram erros:</p><ul>' . $error . '</ul>';
 
     endif;
 
@@ -100,7 +122,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
                 </a>
 
                 <a href="/">
-                    <i class="fa-solid fa-house fa-fw"></i>
+                    <i class="fa-solid fa-house-chimney fa-fw"></i>
                     Página inicial
                 </a>
 
@@ -122,14 +144,27 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             <?php if ($error != '') echo '<div class="error">' . $error . '</div>'; ?>
 
             <p>
-                <label for="password">Nova senha:</label>
-                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off" value="">
-                <button type="button" id="passToggle"><i class="fa-solid fa-eye fa-fw"></i></button>
+                <label for="newpassword">Nova senha:</label>
+                <input type="password" name="newpassword" id="newpassword" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off">
+                <button type="button" id="newPassToggle" data-field="newpassword"><i class="fa-solid fa-eye fa-fw"></i></button>
             <div class="form-help">
                 <ul>
                     <li>Mínimo de 7 e máximo de 32 caracteres;</li>
                     <li>Pelo menos uma letra maiúscula de A até Z;</li>
                     <li>Pelo menos um número de 0 à 9.</li>
+                </ul>
+            </div>
+            </p>
+
+            <hr class="divider">
+
+            <p>
+                <label for="password">Digite a senha atual:</label>
+                <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off">
+                <button type="button" id="passToggle" data-field="password"><i class="fa-solid fa-eye fa-fw"></i></button>
+            <div class="form-help">
+                <ul>
+                    <li>A senha é usada para confirmar que a conta é sua.</li>
                 </ul>
             </div>
             </p>

@@ -17,25 +17,61 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
  * Seus códigos PHP desta página iniciam aqui! *
  ***********************************************/
 
-// Se confirmou o cancelamento...
-if ($_SERVER['QUERY_STRING'] === 'delete') :
+// Se usuário NÃO está logado, envia para 'login'.
+if (!isset($_COOKIE['user'])) header('Location: /user/login/');
 
-    // SQL que atualiza o banco de dados.
-    $sql = <<<SQL
+// Variáveis principais.
+$error = '';
+$feedback = false;
 
-UPDATE users SET user_status = 'deleted'
-WHERE user_id = '{$user['user_id']}'
+// Se formulário foi enviado...
+if ($_SERVER["REQUEST_METHOD"] == "POST") :
+
+    // Recebe a 'senha' do formulário, sanitiza e valida.
+    $password = trim(htmlspecialchars($_POST['password']));
+    if (!preg_match('/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}/', $password)) :
+        $error .= '<li>A senha atual está fora do padrão;</li>';
+    else :
+        // Testa a senha no banco de dados.
+        $sql = <<<SQL
+
+SELECT user_id FROM users 
+WHERE user_id = '{$user['user_id']}' 
+    AND user_password = SHA1('{$password}');
 
 SQL;
+        $res = $conn->query($sql);
+        if ($res->num_rows != 1)
+            $error .= '<li>A senha atual não confere;</li>';
 
-    // Executa a query.
-    $conn->query($sql);
+    endif;
 
-    // Apaga cookie.
-    setcookie('user', '', -1, '/');
+    // Se não ocorreram erros.
+    if ($error === '') :
 
-    // Redireciona para a home.
-    header('Location: /');
+        // SQL que atualiza o banco de dados.
+        $sql = <<<SQL
+
+    UPDATE users SET user_status = 'deleted'
+    WHERE user_id = '{$user['user_id']}'
+    
+    SQL;
+
+        // Executa a query.
+        $conn->query($sql);
+
+        // Apaga cookie.
+        setcookie('user', '', -1, '/');
+
+        // Redireciona para a home.
+        header('Location: /');
+
+    else :
+
+        // Formada mensagem de erro.
+        $error = '<h3>Oooops!</h3><p>Ocorreram erros:</p><ul>' . $error . '</ul>';
+
+    endif;
 
 endif;
 
@@ -66,12 +102,28 @@ require($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
     <p class="text-center" style="color: grey"><i class="fa-solid fa-user-xmark fa-fw fa-4x"></i></p>
     <p>Tem certeza que deseja cancelar seu cadastro? Se cancelar, não será mais possível acessar o conteúdo exclusivo.</p>
     <p>Clique no botão abaixo para cancelar o cadastro.</p>
-    <p class="text-center">
-        <button class="btn-logout" type="button" onclick="location.href = '?delete'">
+
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" name="edituser">
+
+        <?php if ($error != '') echo '<div class="error">' . $error . '</div>'; ?>
+
+        <p>
+            <label for="password">Digite a senha atual:</label>
+            <input type="password" name="password" id="password" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{7,32}$" class="valid password" autocomplete="off">
+            <button type="button" id="passToggle" data-field="password"><i class="fa-solid fa-eye fa-fw"></i></button>
+        <div class="form-help">
+            <ul>
+                <li>A senha é usada para confirmar que a conta é sua.</li>
+            </ul>
+        </div>
+        </p>
+
+        <button class="btn-logout" type="submit">
             <i class="fa-solid fa-user-xmark fa-fw"></i>
             &nbsp;Cancelar cadastro
         </button>
-    </p>
+
+    </form>
 
 </section>
 

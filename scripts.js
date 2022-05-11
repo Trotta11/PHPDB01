@@ -3,26 +3,33 @@
  * 'togglePassword'.
  */
 if (!!document.getElementById("passToggle")) passToggle.onclick = togglePassword;
+if (!!document.getElementById("newPassToggle")) newPassToggle.onclick = togglePassword;
 
 /**
- * Função que mostra/oculta (toggle) o valor do campo senha do usuário.
+ * Função que mostra/oculta (toggle) o valor do campo 'senha do usuário'.
  */
 function togglePassword() {
-    if (password.type == 'password') {
 
-        // Se o campo é do tipo 'password', troca para o tipo 'text'.
-        password.type = 'text';
+    // Obtém o id do campo 'alvo'.
+    idField = this.getAttribute('data-field');
 
-        // Troca o ícone do botão.
-        passToggle.innerHTML = '<i class="fa-solid fa-eye-slash fa-fw"></i>';
+    // Se o campo é do tipo 'password'...
+    if (document.getElementById(idField).type == 'password') {
 
+        // ... troca para o tipo 'text'.
+        document.getElementById(idField).type = 'text';
+
+        // ... troca o ícone do botão.
+        this.innerHTML = '<i class="fa-solid fa-eye-slash fa-fw"></i>';
+
+        // Se o campo é do tipo 'text'...
     } else {
 
-        // Senão, o campo será do tipo 'password'.
-        password.type = 'password';
+        // ... troca para o tipo 'password'.
+        document.getElementById(idField).type = 'password';
 
-        // Troca o ícone do botão.
-        passToggle.innerHTML = '<i class="fa-solid fa-eye fa-fw"></i>';
+        // ... troca o ícone do botão.
+        this.innerHTML = '<i class="fa-solid fa-eye fa-fw"></i>';
 
     }
 
